@@ -1,0 +1,24 @@
+name: Say Hello
+
+on:
+  workflow_dispatch: # Allow manual trigger
+
+  repository_dispatch: # Allow trigger from repository_dispatch event driven by a HCP Waypoint action
+    types:
+      - hcp-waypoint-action
+
+env:
+  DEFAULT_PROJECT_NAME: UnknownProject 
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Say Hello
+      env:
+        PROJECT_NAME: ${{ vars.PROJECT_NAME || env.DEFAULT_PROJECT_NAME }}
+      run: echo "Hello from $PROJECT_NAME, created by HCP Waypoint!"
